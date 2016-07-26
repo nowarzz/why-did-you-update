@@ -5,8 +5,9 @@ import _keys from 'lodash/keys'
 import _union from 'lodash/union'
 
 const isReferenceEntity = o => Array.isArray(o) || _isObject(o)
+const addPath = (path, key) => path && key ? `${path}.${key}` : key || path || null;
 
-export const deepDiff = (prev, next, name, notes) => {
+export const deepDiff = (prev, next, name = null, notes) => {
   const isRefEntity = isReferenceEntity(prev) && isReferenceEntity(next)
 
   if (!_isEqual(prev, next)) {
@@ -14,21 +15,20 @@ export const deepDiff = (prev, next, name, notes) => {
 
     if (isFunc) {
       if (prev.name === next.name) {
-        const type = `function`
-        return notes.concat({name, prev, next, type})
+        return notes.concat(`${name} (fn)`)
       }
     } else if (isRefEntity) {
       const keys = _union(_keys(prev), _keys(next))
-      return keys.reduce((acc, key) => deepDiff(prev[key], next[key], `${name}.${key}`, acc), notes)
+      const result = keys.reduce((acc, key) => deepDiff(prev[key], next[key], addPath(name, key), acc), []);
+      return notes.concat(result.length == 0 ? name : result)
     }
   } else if (prev !== next) {
-    const type = `avoidable`
-
     if (isRefEntity) {
       const keys = _union(_keys(prev), _keys(next))
-      return keys.reduce((acc, key) => deepDiff(prev[key], next[key], `${name}.${key}`, acc), notes.concat({name, prev, next, type}))
+      const result = keys.reduce((acc, key) => deepDiff(prev[key], next[key], addPath(name, key), acc), []);
+      return notes.concat(result.length == 0 ? name : result)
     } else {
-      return notes.concat({name, prev, next, type})
+      return notes.concat(name)
     }
   }
 

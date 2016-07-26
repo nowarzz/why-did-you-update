@@ -3,13 +3,13 @@ import {getDisplayName} from './getDisplayName'
 import {normalizeOptions} from './normalizeOptions'
 import {shouldInclude} from './shouldInclude'
 
-function diffProps (prev, next, displayName) {
-  return deepDiff(prev, next, `${displayName}.props`, [])
+function diffProps (prev, next) {
+  return deepDiff(prev, next, 'props', [])
 }
 
-function diffState (prev, next , displayName) {
+function diffState (prev, next) {
   if (prev && next) {
-    return deepDiff(prev, next, `${displayName}.state`, [])
+    return deepDiff(prev, next, 'state', [])
   }
 
   return []
@@ -23,11 +23,10 @@ function createComponentDidUpdate (opts) {
       return
     }
 
-    const diffs =
-      diffProps(prevProps, this.props, displayName)
-        .concat(diffState(prevState, this.state, displayName))
+    const diffs = diffProps(prevProps, this.props)
+                    .concat(diffState(prevState, this.state));
 
-    diffs.forEach(opts.notifier)
+    opts.notifier(displayName, diffs);
   }
 }
 
