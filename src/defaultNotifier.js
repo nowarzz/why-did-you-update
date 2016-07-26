@@ -1,16 +1,10 @@
 const FUNC_WARNING = `Value is a function. Possibly avoidable re-render?`
 const AVOIDABLE_WARNING = `Value did not change. Avoidable re-render!`
 
-export const defaultNotifier = ({name, prev, next, type}) => {
-  console.group(name)
+let i = 0;
 
-  if (type === `avoidable`) {
-    console.warn(`%c%s`, `font-weight: bold`, AVOIDABLE_WARNING)
-  } else {
-    console.warn(FUNC_WARNING)
+export const mkDefaultNotifier = limit => ({name, prev, next, type}) => {
+  if (type === 'avoidable' && i++ < limit) {
+    console.log(`Avoidable re-render in ${name}: ${prev} => ${next}`);
   }
-
-  console.log(`%cbefore`, `font-weight: bold`, prev)
-  console.log(`%cafter `, `font-weight: bold`, next)
-  console.groupEnd()
 }
