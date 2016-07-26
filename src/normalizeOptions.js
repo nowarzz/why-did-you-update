@@ -14,7 +14,7 @@ export const normalizeOptions = (opts = {}) => {
     include = [DEFAULT_INCLUDE],
     exclude = [DEFAULT_EXCLUDE],
     limit   = DEFAULT_LIMIT,
-    notifier = mkDefaultNotifier(opts.limit || DEFAULT_LIMIT),
+    notifier = defaultNotifier,
   } = opts;
 
 
