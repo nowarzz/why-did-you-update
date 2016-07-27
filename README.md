@@ -1,9 +1,14 @@
 # Why did you update, bruh?
 
 [![Travis][build-badge]][build]
-[![npm version](https://badge.fury.io/js/why-did-you-update.svg)](https://badge.fury.io/js/why-did-you-update)
+[![npm version](https://badge.fury.io/js/rn-why-did-you-update.svg)](https://badge.fury.io/js/rn-why-did-you-update)
 
-### Wat?
+### Intro
+
+This is a fork of [Why did you update](https://www.npmjs.com/package/why-did-you-update). The logging is optimized for usage with react-native by
+only using `console.log` and trying to minimize the amount of log calls.
+
+### What?
 
 ![](http://i.imgur.com/Ui8YUBe.png)
 
